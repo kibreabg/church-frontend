@@ -1,0 +1,25 @@
+<div class="col-12">
+  <div class="card mb-4">
+    <div class="card-header"><strong>Manage Church Services</strong></div>
+    <div class="card-body">
+      <form class="row g-3" [formGroup]="servicesForm" id="formServices" (ngSubmit)="saveService()">
+        <div class="col-md-6">
+          <label class="form-label" for="txtService">Church Service</label>
+          <input class="form-control" id="txtService" type="text" formControlName="name">
+        </div>
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit">Save</button>
+          <button class="btn btn-default" type="button" (click)="deleteService()">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card mb-4">
+    <div class="card-header"><strong>List of Services</strong></div>
+    <div class="card-body">
+      <ag-grid-angular #servicesGrid style="width: 100%; height: 500px;" (selectionChanged)="onSelectionChanged($event)"
+        [gridOptions]=gridOptions class="ag-theme-alpine" [rowData]="services" [columnDefs]="columnDefs">
+      </ag-grid-angular>
+    </div>
+  </div>
+</div>

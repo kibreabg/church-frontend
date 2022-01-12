@@ -28,9 +28,17 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/simplebar/dist/simplebar.css",
+              "./node_modules/ag-grid-community/dist/styles/ag-grid.css",
+              "./node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css",
+              "./node_modules/ngx-toastr/toastr.css",
+              "src/assets/css/simplebar.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/coreui.bundle.min.js",
+              "./node_modules/simplebar/dist/simplebar.min.js"
+            ]
           },
           "configurations": {
             "production": {
