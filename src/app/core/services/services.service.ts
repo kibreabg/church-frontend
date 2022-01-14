@@ -36,4 +36,8 @@ export class ServicesService {
   getServices(): Observable<Service[]> {
     return this.httpClient.get<Service[]>(this.url, httpOptions);
   }
+
+  deleteService(id: number): Observable<any> {
+    return this.httpClient.delete<Service>(this.url + '/' + id, httpOptions);
+  }
 }

@@ -5,11 +5,14 @@
       <form class="row g-3" [formGroup]="servicesForm" id="formServices" (ngSubmit)="saveService()">
         <div class="col-md-6">
           <label class="form-label" for="txtService">Church Service</label>
-          <input class="form-control" id="txtService" type="text" formControlName="name">
+          <input class="form-control" id="txtService" type="text" formControlName="name"
+            [ngClass]="{'was-validated is-invalid' : servicesForm.get('name')?.hasError('required') && servicesForm.get('name')?.touched}">
+          <div *ngIf="servicesForm.get('name')?.hasError('required') && servicesForm.get('name')?.touched"
+            class="invalid-feedback">Please provide service Name!</div>
         </div>
         <div class="col-12">
-          <button class="btn btn-primary" type="submit">Save</button>
-          <button class="btn btn-default" type="button" (click)="deleteService()">Delete</button>
+          <button class="btn btn-primary" type="submit" [disabled]="!servicesForm.valid">Save</button>
+          <button class="btn btn-danger" type="button" [disabled]="!servicesForm.valid" (click)="deleteService()">Delete</button>
         </div>
       </form>
     </div>

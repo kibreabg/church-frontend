@@ -24,6 +24,7 @@ export class ServicesComponent implements OnInit {
   public modalRef?: BsModalRef;
   public service = new Service();
   @ViewChild('servicesGrid') servicesGrid!: AgGridAngular;
+  @ViewChild('confirmModal') confirmModal!: ConfirmComponent;
   public services!: Service[];
   public servicesForm = new FormGroup({
     name: new FormControl('', Validators.required)
@@ -64,6 +65,9 @@ export class ServicesComponent implements OnInit {
         result => {
           this.toastrService.success('Church Service updated successfully!', 'Updated!');
           this.getServices();
+          this.servicesForm.reset({
+            name: ''
+          });
         });
     } else {
       return this.servicesService.addService(this.service).subscribe(
@@ -71,6 +75,9 @@ export class ServicesComponent implements OnInit {
           this.service.id = serviceId;
           this.toastrService.success('Church Service added successfully!', 'Saved!');
           this.getServices();
+          this.servicesForm.reset({
+            name: ''
+          });
         });
     }
 
@@ -89,18 +96,25 @@ export class ServicesComponent implements OnInit {
   getServices() {
     return this.servicesService.getServices().subscribe(theServices => {
       this.services = theServices;
+      this.service = new Service();
     });
   }
 
   deleteService() {
-    this.modalService.show(ConfirmComponent, { class: 'modal-sm' });
-  }
-
-  confirm(): void {
-    this.modalService.hide();
-  }
-
-  decline(): void {
-    this.modalRef?.hide();
+    this.modalRef = this.modalService.show(ConfirmComponent, { class: 'modal-sm' });
+    this.modalRef.content.onClose.subscribe((result: any) => {
+      if (result == true) {
+        this.servicesService.deleteService(this.service.id).subscribe(result => {
+          this.getServices();
+          this.servicesForm.reset({
+            name: ''
+          });
+        });
+        this.toastrService.error('Church Service deleted successfully!');
+        this.modalRef?.hide();
+      } else {
+        this.modalRef?.hide();
+      }
+    });
   }
 }
