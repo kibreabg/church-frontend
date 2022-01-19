@@ -6,6 +6,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { ToastrModule } from 'ngx-toastr';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ConfirmComponent } from './confirm/confirm.component';
 
 
@@ -21,7 +22,8 @@ import { ConfirmComponent } from './confirm/confirm.component';
     SharedRoutingModule,
     AgGridModule.withComponents([]),
     ToastrModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    BsDatepickerModule.forRoot()
   ],
   exports: [
     CommonModule,
@@ -30,7 +32,8 @@ import { ConfirmComponent } from './confirm/confirm.component';
     LayoutComponent,
     AgGridModule,
     ToastrModule,
-    ModalModule
+    ModalModule,
+    BsDatepickerModule
   ]
 })
 export class SharedModule { }

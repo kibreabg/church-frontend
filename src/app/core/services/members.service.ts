@@ -21,6 +21,14 @@ export class MembersService {
 
   private url: string = environment.apiUrl + 'Members';
 
+  addMember(member: Member): Observable<any> {
+    return this.httpClient.post<Member>(this.url, member, httpOptions);
+  }
+
+  getMember(id: number): Observable<Member> {
+    return this.httpClient.get<Member>(this.url + '/' + id, httpOptions);
+  }
+
   getMembers(): Observable<Member[]> {
     return this.httpClient.get<Member[]>(this.url, httpOptions);
   }

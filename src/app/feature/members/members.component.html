@@ -1,8 +1,272 @@
-<div class="card mb-4">
-  <div class="card-header"><strong>List of Members</strong></div>
-  <div class="card-body">
-    <ag-grid-angular #membersGrid style="width: 100%; height: 500px;" [gridOptions]=gridOptions class="ag-theme-alpine"
-      [rowData]="members" [columnDefs]="columnDefs">
-    </ag-grid-angular>
+<div class="col-12">
+  <div class="card mb-4">
+    <div class="card-header"><strong>Manage Church Members</strong></div>
+    <div class="card-body">
+      <form class="row g-3" [formGroup]="membersForm" (ngSubmit)="saveMember()">
+        <div class="col-md-4">
+          <label class="form-label">Title</label>
+          <input class="form-control" formControlName="title" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">First Name</label>
+          <input class="form-control" formControlName="firstName" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Last Name</label>
+          <input class="form-control" formControlName="lastName" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Sur Name</label>
+          <input class="form-control" formControlName="surName" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Sex</label>
+          <div class="form-control divradio">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="sex" value="Male">
+              <label class="form-check-label">Male</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="sex" value="Female">
+              <label class="form-check-label">Female</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Birth Date</label>
+          <input class="form-control" formControlName="birthDate" bsDatepicker [bsConfig]="bsConfig" type="text"
+            placeholder="Pick Date">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Wedding Date</label>
+          <input class="form-control" formControlName="weddingDate" bsDatepicker [bsConfig]="bsConfig" type="text"
+            placeholder="Pick Date">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Registration Date</label>
+          <input class="form-control" formControlName="registrationDate" bsDatepicker [bsConfig]="bsConfig" type="text"
+            placeholder="Pick Date">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Membership Date</label>
+          <input class="form-control" formControlName="membershipDate" bsDatepicker [bsConfig]="bsConfig" type="text"
+            placeholder="Pick Date">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Marital Status</label>
+          <select class="form-select" aria-label="Marital Status" formControlName="maritalStatus">
+            <option selected value="">Choose Marital Status</option>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+            <option value="Divorced">Divorced</option>
+            <option value="Widowed">Widowed</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Baptised Here?</label>
+          <div class="form-control divradio">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="baptizedHere" value="Yes">
+              <label class="form-check-label">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="baptizedHere" value="No">
+              <label class="form-check-label">No</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Previous Church</label>
+          <input class="form-control" formControlName="previousChurch" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Discipleship Teacher</label>
+          <input class="form-control" formControlName="discipleshipTeacher" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Is Serving?</label>
+          <div class="form-control divradio">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="isServing" value="Yes">
+              <label class="form-check-label">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="isServing" value="No">
+              <label class="form-check-label">No</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Educational Level</label>
+          <input class="form-control" formControlName="educationLevel" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Is In HomeCell?</label>
+          <div class="form-control divradio">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="isInHomeCell" value="Yes">
+              <label class="form-check-label">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="isInHomeCell" value="No">
+              <label class="form-check-label">No</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">HomeCell</label>
+          <input class="form-control" formControlName="homeCellId" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Not In HomeCell Reason</label>
+          <input class="form-control" formControlName="notInHomeCellReason" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Permits Home for HomeCell?</label>
+          <div class="form-control divradio">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="permitHomeForHomeCell" value="Yes">
+              <label class="form-check-label">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="permitHomeForHomeCell" value="No">
+              <label class="form-check-label">No</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Is In Church Social Service?</label>
+          <div class="form-control divradio">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="isInChurchSocialService" value="Yes">
+              <label class="form-check-label">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="isInChurchSocialService" value="No">
+              <label class="form-check-label">No</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Has Job?</label>
+          <div class="form-control divradio">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="hasJob" value="Yes">
+              <label class="form-check-label">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="hasJob" value="No">
+              <label class="form-check-label">No</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Occupation</label>
+          <input class="form-control" formControlName="occupation" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Company</label>
+          <input class="form-control" formControlName="company" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Responsibility</label>
+          <input class="form-control" formControlName="responsibility" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Profession</label>
+          <input class="form-control" formControlName="profession" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Other Abilities</label>
+          <input class="form-control" formControlName="otherAbilities" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Spouse Title</label>
+          <input class="form-control" formControlName="spouseTitle" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Spouse Full Name</label>
+          <input class="form-control" formControlName="spouseFullName" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Is Spouse Believer?</label>
+          <div class="form-control divradio">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="isSpouseBeliever" value="Yes">
+              <label class="form-check-label">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="isSpouseBeliever" value="No">
+              <label class="form-check-label">No</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Spouse's Church</label>
+          <input class="form-control" formControlName="spouseChurch" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Spouse's Maximum Educational Level</label>
+          <input class="form-control" formControlName="spouseMaxEducationalLevel" type="text">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">No. of Female Believer Children</label>
+          <input class="form-control" formControlName="femaleBelieverChildren" type="number">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">No. of Female Non-Believer Children</label>
+          <input class="form-control" formControlName="femaleNonBelieverChildren" type="number">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">No. of Male Believer Children</label>
+          <input class="form-control" formControlName="maleBelieverChildren" type="number">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">No. of Male Non-Believer Children</label>
+          <input class="form-control" formControlName="maleNonBelieverChildren" type="number">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">No. of Children Ages 1-7</label>
+          <input class="form-control" formControlName="ageOneToSeven" type="number">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">No. of Children Ages 8-13</label>
+          <input class="form-control" formControlName="ageEightToThirteen" type="number">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">No. of Children Ages 14-30</label>
+          <input class="form-control" formControlName="ageFourteenToThirty" type="number">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">No. of Children in Grades Kg-6</label>
+          <input class="form-control" formControlName="eduKgToSix" type="number">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">No. of Children in Grades 7-12</label>
+          <input class="form-control" formControlName="eduSevenToTwelve" type="number">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">No. of Children in Collage</label>
+          <input class="form-control" formControlName="eduCollage" type="number">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">No. of Children in University</label>
+          <input class="form-control" formControlName="eduUniversity" type="number">
+        </div>
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit" [disabled]="!membersForm.valid">Save</button>
+          <button class="btn btn-danger" type="button" [disabled]="!membersForm.valid">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card mb-4">
+    <div class="card-header"><strong>List of Members</strong></div>
+    <div class="card-body">
+      <ag-grid-angular #membersGrid style="width: 100%; height: 500px;" [gridOptions]=gridOptions
+        class="ag-theme-alpine" (selectionChanged)="onSelectionChanged($event)" [rowData]="members"
+        [columnDefs]="columnDefs">
+      </ag-grid-angular>
+    </div>
   </div>
 </div>

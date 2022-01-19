@@ -32,6 +32,7 @@
               "./node_modules/ag-grid-community/dist/styles/ag-grid.css",
               "./node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css",
               "./node_modules/ngx-toastr/toastr.css",
+              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
               "src/assets/css/simplebar.css",
               "src/styles.css"
             ],
