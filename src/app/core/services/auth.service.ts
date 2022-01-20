@@ -30,8 +30,10 @@ export class AuthService {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
+        let now = Math.floor(new Date().getTime()/1000);
+        let tokenExpiry = new Date((decodedToken as any).exp).getTime();
         if (decodedToken) {
-          return ((decodedToken as any).iss == 'Church Server') ? true : false;
+          return ((decodedToken as any).iss == 'Church Server' && tokenExpiry > now) ? true : false;
         } else {
           return false;
         }
