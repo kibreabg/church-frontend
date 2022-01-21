@@ -98,77 +98,99 @@ export class MembersComponent implements OnInit {
     this.bsConfig = Object.assign({}, { containerClass: 'theme-dark-blue' });
   }
 
+  isFieldValid(field: string) {
+    return !this.membersForm.get(field)?.valid && this.membersForm.get(field)?.touched;
+  }
+
+  displayInvalidCss(field: string) {
+    return {
+      'was-validated is-invalid': this.isFieldValid(field)
+    };
+  }
+
+  validateAllFormFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      }
+    });
+  }
+
   onSelectionChanged(params: any) {
     const selectedRows = this.membersGrid.api.getSelectedRows();
     this.getMember(selectedRows[0].id);
   }
 
   saveMember() {
+    if (this.membersForm.valid) {
+      //#region Get Member Form Values
+      this.member.title = this.membersForm.get('title')?.value;
+      this.member.firstName = this.membersForm.get('firstName')?.value;
+      this.member.lastName = this.membersForm.get('lastName')?.value;
+      this.member.surName = this.membersForm.get('surName')?.value;
+      this.member.sex = this.membersForm.get('sex')?.value;
+      this.member.birthDate = this.membersForm.get('birthDate')?.value;
+      this.member.weddingDate = this.membersForm.get('weddingDate')?.value;
+      this.member.registrationDate = this.membersForm.get('registrationDate')?.value;
+      this.member.membershipDate = this.membersForm.get('membershipDate')?.value;
+      this.member.maritalStatus = this.membersForm.get('maritalStatus')?.value;
+      this.member.baptizedHere = this.membersForm.get('baptizedHere')?.value;
+      this.member.previousChurch = this.membersForm.get('previousChurch')?.value;
+      this.member.discipleshipTeacher = this.membersForm.get('discipleshipTeacher')?.value;
+      this.member.isServing = this.membersForm.get('isServing')?.value;
+      this.member.educationLevel = this.membersForm.get('educationLevel')?.value;
+      this.member.isInHomeCell = this.membersForm.get('isInHomeCell')?.value;
+      this.member.homeCellId = this.membersForm.get('homeCellId')?.value;
+      this.member.notInHomeCellReason = this.membersForm.get('notInHomeCellReason')?.value;
+      this.member.permitHomeForHomeCell = this.membersForm.get('permitHomeForHomeCell')?.value;
+      this.member.isInChurchSocialService = this.membersForm.get('isInChurchSocialService')?.value;
+      this.member.hasJob = this.membersForm.get('hasJob')?.value;
+      this.member.occupation = this.membersForm.get('occupation')?.value;
+      this.member.company = this.membersForm.get('company')?.value;
+      this.member.responsibility = this.membersForm.get('responsibility')?.value;
+      this.member.profession = this.membersForm.get('profession')?.value;
+      this.member.otherAbilities = this.membersForm.get('otherAbilities')?.value;
+      this.member.spouseTitle = this.membersForm.get('spouseTitle')?.value;
+      this.member.spouseFullName = this.membersForm.get('spouseFullName')?.value;
+      this.member.isSpouseBeliever = this.membersForm.get('isSpouseBeliever')?.value;
+      this.member.spouseChurch = this.membersForm.get('spouseChurch')?.value;
+      this.member.spouseMaxEducationalLevel = this.membersForm.get('spouseMaxEducationalLevel')?.value;
+      this.member.femaleBelieverChildren = this.membersForm.get('femaleBelieverChildren')?.value;
+      this.member.maleBelieverChildren = this.membersForm.get('maleBelieverChildren')?.value;
+      this.member.femaleNonBelieverChildren = this.membersForm.get('femaleNonBelieverChildren')?.value;
+      this.member.maleNonBelieverChildren = this.membersForm.get('maleNonBelieverChildren')?.value;
+      this.member.ageOneToSeven = this.membersForm.get('ageOneToSeven')?.value;
+      this.member.ageEightToThirteen = this.membersForm.get('ageEightToThirteen')?.value;
+      this.member.ageFourteenToThirty = this.membersForm.get('ageFourteenToThirty')?.value;
+      this.member.eduKgToSix = this.membersForm.get('eduKgToSix')?.value;
+      this.member.eduSevenToTwelve = this.membersForm.get('eduSevenToTwelve')?.value;
+      this.member.eduCollage = this.membersForm.get('eduCollage')?.value;
+      this.member.eduUniversity = this.membersForm.get('eduUniversity')?.value;
+      //#endregion
 
-    //#region Get Member Form Values
-    this.member.title = this.membersForm.get('title')?.value;
-    this.member.firstName = this.membersForm.get('firstName')?.value;
-    this.member.lastName = this.membersForm.get('lastName')?.value;
-    this.member.surName = this.membersForm.get('surName')?.value;
-    this.member.sex = this.membersForm.get('sex')?.value;
-    this.member.birthDate = this.membersForm.get('birthDate')?.value;
-    this.member.weddingDate = this.membersForm.get('weddingDate')?.value;
-    this.member.registrationDate = this.membersForm.get('registrationDate')?.value;
-    this.member.membershipDate = this.membersForm.get('membershipDate')?.value;
-    this.member.maritalStatus = this.membersForm.get('maritalStatus')?.value;
-    this.member.baptizedHere = this.membersForm.get('baptizedHere')?.value;
-    this.member.previousChurch = this.membersForm.get('previousChurch')?.value;
-    this.member.discipleshipTeacher = this.membersForm.get('discipleshipTeacher')?.value;
-    this.member.isServing = this.membersForm.get('isServing')?.value;
-    this.member.educationLevel = this.membersForm.get('educationLevel')?.value;
-    this.member.isInHomeCell = this.membersForm.get('isInHomeCell')?.value;
-    this.member.homeCellId = this.membersForm.get('homeCellId')?.value;
-    this.member.notInHomeCellReason = this.membersForm.get('notInHomeCellReason')?.value;
-    this.member.permitHomeForHomeCell = this.membersForm.get('permitHomeForHomeCell')?.value;
-    this.member.isInChurchSocialService = this.membersForm.get('isInChurchSocialService')?.value;
-    this.member.hasJob = this.membersForm.get('hasJob')?.value;
-    this.member.occupation = this.membersForm.get('occupation')?.value;
-    this.member.company = this.membersForm.get('company')?.value;
-    this.member.responsibility = this.membersForm.get('responsibility')?.value;
-    this.member.profession = this.membersForm.get('profession')?.value;
-    this.member.otherAbilities = this.membersForm.get('otherAbilities')?.value;
-    this.member.spouseTitle = this.membersForm.get('spouseTitle')?.value;
-    this.member.spouseFullName = this.membersForm.get('spouseFullName')?.value;
-    this.member.isSpouseBeliever = this.membersForm.get('isSpouseBeliever')?.value;
-    this.member.spouseChurch = this.membersForm.get('spouseChurch')?.value;
-    this.member.spouseMaxEducationalLevel = this.membersForm.get('spouseMaxEducationalLevel')?.value;
-    this.member.femaleBelieverChildren = this.membersForm.get('femaleBelieverChildren')?.value;
-    this.member.maleBelieverChildren = this.membersForm.get('maleBelieverChildren')?.value;
-    this.member.femaleNonBelieverChildren = this.membersForm.get('femaleNonBelieverChildren')?.value;
-    this.member.maleNonBelieverChildren = this.membersForm.get('maleNonBelieverChildren')?.value;
-    this.member.ageOneToSeven = this.membersForm.get('ageOneToSeven')?.value;
-    this.member.ageEightToThirteen = this.membersForm.get('ageEightToThirteen')?.value;
-    this.member.ageFourteenToThirty = this.membersForm.get('ageFourteenToThirty')?.value;
-    this.member.eduKgToSix = this.membersForm.get('eduKgToSix')?.value;
-    this.member.eduSevenToTwelve = this.membersForm.get('eduSevenToTwelve')?.value;
-    this.member.eduCollage = this.membersForm.get('eduCollage')?.value;
-    this.member.eduUniversity = this.membersForm.get('eduUniversity')?.value;
-    //#endregion
-
-    console.log(this.membersForm.value);
-
-    if (this.member.id > 0) {
-      return this.membersService.updateMember(this.member).subscribe(
-        result => {
-          this.toastrService.success('Church Member updated successfully!', 'Updated!');
-          this.getMembers();
-          this.membersForm.reset({
+      if (this.member.id > 0) {
+        return this.membersService.updateMember(this.member).subscribe(
+          result => {
+            this.toastrService.success('Church Member updated successfully!', 'Updated!');
+            this.getMembers();
+            this.membersForm.reset({
+            });
           });
-        });
+      } else {
+        return this.membersService.addMember(this.member).subscribe(
+          memberId => {
+            this.member.id = memberId;
+            this.toastrService.success('Church Member added successfully!', 'Saved!');
+            this.getMembers();
+            this.membersForm.reset({
+            });
+          });
+      }
     } else {
-      return this.membersService.addMember(this.member).subscribe(
-        memberId => {
-          this.member.id = memberId;
-          this.toastrService.success('Church Member added successfully!', 'Saved!');
-          this.getMembers();
-          this.membersForm.reset({
-          });
-        });
+      return this.validateAllFormFields(this.membersForm);
     }
   }
 

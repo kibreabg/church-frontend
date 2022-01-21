@@ -9,11 +9,14 @@
         </div>
         <div class="col-md-4">
           <label class="form-label">First Name</label>
-          <input class="form-control" formControlName="firstName" type="text">
+          <input class="form-control" formControlName="firstName" type="text"
+            [ngClass]="displayInvalidCss('firstName')">
+          <div *ngIf="isFieldValid('firstName')" class="invalid-feedback">Please provide member's First Name!</div>
         </div>
         <div class="col-md-4">
           <label class="form-label">Last Name</label>
-          <input class="form-control" formControlName="lastName" type="text">
+          <input class="form-control" formControlName="lastName" type="text" [ngClass]="displayInvalidCss('lastName')">
+          <div *ngIf="isFieldValid('lastName')" class="invalid-feedback">Please provide member's Last Name!</div>
         </div>
         <div class="col-md-4">
           <label class="form-label">Sur Name</label>
@@ -23,19 +26,23 @@
           <label class="form-label">Sex</label>
           <div class="form-control divradio">
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="sex" value="Male">
-              <label class="form-check-label">Male</label>
+              <input class="form-check-input" [ngClass]="displayInvalidCss('sex')" type="radio" formControlName="sex"
+                value="Male">
+              <label class="form-check-label" [ngClass]="displayInvalidCss('sex')">Male</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="sex" value="Female">
-              <label class="form-check-label">Female</label>
+              <input class="form-check-input" [ngClass]="displayInvalidCss('sex')" type="radio" formControlName="sex"
+                value="Female">
+              <label class="form-check-label" [ngClass]="displayInvalidCss('sex')">Female</label>
             </div>
           </div>
+          <div *ngIf="isFieldValid('sex')" class="invalid-feedback" style="display: block;">Please provide member's Gender!</div>
         </div>
         <div class="col-md-4">
           <label class="form-label">Birth Date</label>
           <input class="form-control" formControlName="birthDate" bsDatepicker [bsConfig]="bsConfig" type="text"
-            placeholder="Pick Date">
+            placeholder="Pick Date" [ngClass]="displayInvalidCss('birthDate')">
+          <div *ngIf="isFieldValid('birthDate')" class="invalid-feedback">Please provide member's Birth Date!</div>
         </div>
         <div class="col-md-4">
           <label class="form-label">Wedding Date</label>
@@ -205,8 +212,9 @@
           <input class="form-control" formControlName="eduUniversity" type="number">
         </div>
         <div class="col-12">
-          <button class="btn btn-primary" type="submit" [disabled]="!membersForm.valid">Save</button>
-          <button class="btn btn-danger" type="button" [disabled]="!membersForm.valid" (click)="deleteMember()">Delete</button>
+          <button class="btn btn-primary" type="submit">Save</button>
+          <button class="btn btn-danger" type="button" [disabled]="!membersForm.valid"
+            (click)="deleteMember()">Delete</button>
         </div>
       </form>
     </div>
