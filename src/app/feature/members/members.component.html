@@ -78,15 +78,8 @@
         </div>
         <div class="col-md-4">
           <label class="form-label">Is Serving?</label>
-          <div class="form-control divradio">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="isServing" value="true">
-              <label class="form-check-label">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="isServing" value="false">
-              <label class="form-check-label">No</label>
-            </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" formControlName="isServing" type="checkbox">
           </div>
         </div>
         <div class="col-md-4">
@@ -95,20 +88,13 @@
         </div>
         <div class="col-md-4">
           <label class="form-label">Is In HomeCell?</label>
-          <div class="form-control divradio">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="isInHomeCell" value="true">
-              <label class="form-check-label">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="isInHomeCell" value="false">
-              <label class="form-check-label">No</label>
-            </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" formControlName="isInHomeCell" type="checkbox">
           </div>
         </div>
         <div class="col-md-4">
           <label class="form-label">HomeCell</label>
-          <input class="form-control" formControlName="homeCellId" type="text">
+          <input class="form-control" formControlName="homeCellId" type="number">
         </div>
         <div class="col-md-4">
           <label class="form-label">Not In HomeCell Reason</label>
@@ -116,41 +102,20 @@
         </div>
         <div class="col-md-4">
           <label class="form-label">Permits Home for HomeCell?</label>
-          <div class="form-control divradio">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="permitHomeForHomeCell" value="true">
-              <label class="form-check-label">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="permitHomeForHomeCell" value="false">
-              <label class="form-check-label">No</label>
-            </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" formControlName="permitHomeForHomeCell" type="checkbox">
           </div>
         </div>
         <div class="col-md-4">
           <label class="form-label">Is In Church Social Service?</label>
-          <div class="form-control divradio">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="isInChurchSocialService" value="true">
-              <label class="form-check-label">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="isInChurchSocialService" value="false">
-              <label class="form-check-label">No</label>
-            </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" formControlName="isInChurchSocialService" type="checkbox">
           </div>
         </div>
         <div class="col-md-4">
           <label class="form-label">Has Job?</label>
-          <div class="form-control divradio">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="hasJob" value="true">
-              <label class="form-check-label">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="hasJob" value="false">
-              <label class="form-check-label">No</label>
-            </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" formControlName="hasJob" type="checkbox">
           </div>
         </div>
         <div class="col-md-4">
@@ -183,15 +148,8 @@
         </div>
         <div class="col-md-4">
           <label class="form-label">Is Spouse Believer?</label>
-          <div class="form-control divradio">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="isSpouseBeliever" value="true">
-              <label class="form-check-label">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="isSpouseBeliever" value="false">
-              <label class="form-check-label">No</label>
-            </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" formControlName="isSpouseBeliever" type="checkbox">
           </div>
         </div>
         <div class="col-md-4">
@@ -248,7 +206,7 @@
         </div>
         <div class="col-12">
           <button class="btn btn-primary" type="submit" [disabled]="!membersForm.valid">Save</button>
-          <button class="btn btn-danger" type="button" [disabled]="!membersForm.valid">Delete</button>
+          <button class="btn btn-danger" type="button" [disabled]="!membersForm.valid" (click)="deleteMember()">Delete</button>
         </div>
       </form>
     </div>

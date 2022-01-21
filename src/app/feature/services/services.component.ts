@@ -110,7 +110,7 @@ export class ServicesComponent implements OnInit {
             name: ''
           });
         });
-        this.toastrService.error('Church Service deleted successfully!');
+        this.toastrService.error('Church Service deleted successfully!', 'Deleted!');
         this.modalRef?.hide();
       } else {
         this.modalRef?.hide();

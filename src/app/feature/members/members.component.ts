@@ -3,9 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Member } from 'src/app/core/models/Member';
 import { MembersService } from 'src/app/core/services/members.service';
+import { ConfirmComponent } from 'src/app/shared/confirm/confirm.component';
 
 @Component({
   selector: 'app-members',
@@ -16,10 +18,12 @@ export class MembersComponent implements OnInit {
 
   constructor(
     private membersService: MembersService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private modalService: BsModalService
   ) { }
 
   @ViewChild('membersGrid') membersGrid!: AgGridAngular;
+  public modalRef?: BsModalRef;
   public member = new Member();
   public members!: Member[];
   public bsConfig?: Partial<BsDatepickerConfig>;
@@ -115,14 +119,14 @@ export class MembersComponent implements OnInit {
     this.member.baptizedHere = this.membersForm.get('baptizedHere')?.value;
     this.member.previousChurch = this.membersForm.get('previousChurch')?.value;
     this.member.discipleshipTeacher = this.membersForm.get('discipleshipTeacher')?.value;
-    this.member.isServing = JSON.parse(this.membersForm.get('isServing')?.value);
+    this.member.isServing = this.membersForm.get('isServing')?.value;
     this.member.educationLevel = this.membersForm.get('educationLevel')?.value;
-    this.member.isInHomeCell = JSON.parse(this.membersForm.get('isInHomeCell')?.value);
+    this.member.isInHomeCell = this.membersForm.get('isInHomeCell')?.value;
     this.member.homeCellId = this.membersForm.get('homeCellId')?.value;
     this.member.notInHomeCellReason = this.membersForm.get('notInHomeCellReason')?.value;
-    this.member.permitHomeForHomeCell = JSON.parse(this.membersForm.get('permitHomeForHomeCell')?.value);
-    this.member.isInChurchSocialService = JSON.parse(this.membersForm.get('isInChurchSocialService')?.value);
-    this.member.hasJob = JSON.parse(this.membersForm.get('hasJob')?.value);
+    this.member.permitHomeForHomeCell = this.membersForm.get('permitHomeForHomeCell')?.value;
+    this.member.isInChurchSocialService = this.membersForm.get('isInChurchSocialService')?.value;
+    this.member.hasJob = this.membersForm.get('hasJob')?.value;
     this.member.occupation = this.membersForm.get('occupation')?.value;
     this.member.company = this.membersForm.get('company')?.value;
     this.member.responsibility = this.membersForm.get('responsibility')?.value;
@@ -130,7 +134,7 @@ export class MembersComponent implements OnInit {
     this.member.otherAbilities = this.membersForm.get('otherAbilities')?.value;
     this.member.spouseTitle = this.membersForm.get('spouseTitle')?.value;
     this.member.spouseFullName = this.membersForm.get('spouseFullName')?.value;
-    this.member.isSpouseBeliever = JSON.parse(this.membersForm.get('isSpouseBeliever')?.value);
+    this.member.isSpouseBeliever = this.membersForm.get('isSpouseBeliever')?.value;
     this.member.spouseChurch = this.membersForm.get('spouseChurch')?.value;
     this.member.spouseMaxEducationalLevel = this.membersForm.get('spouseMaxEducationalLevel')?.value;
     this.member.femaleBelieverChildren = this.membersForm.get('femaleBelieverChildren')?.value;
@@ -149,7 +153,7 @@ export class MembersComponent implements OnInit {
     console.log(this.membersForm.value);
 
     if (this.member.id > 0) {
-      return this.membersService.addMember(this.member).subscribe(
+      return this.membersService.updateMember(this.member).subscribe(
         result => {
           this.toastrService.success('Church Member updated successfully!', 'Updated!');
           this.getMembers();
@@ -176,10 +180,10 @@ export class MembersComponent implements OnInit {
         lastName: theMember.lastName,
         surName: theMember.surName,
         sex: theMember.sex,
-        birthDate: theMember.birthDate,
-        weddingDate: theMember.weddingDate,
-        registrationDate: theMember.registrationDate,
-        membershipDate: theMember.membershipDate,
+        birthDate: new Date(theMember.birthDate),
+        weddingDate: new Date(theMember.weddingDate),
+        registrationDate: new Date(theMember.registrationDate),
+        membershipDate: new Date(theMember.membershipDate),
         maritalStatus: theMember.maritalStatus,
         baptizedHere: theMember.baptizedHere,
         previousChurch: theMember.previousChurch,
@@ -215,7 +219,7 @@ export class MembersComponent implements OnInit {
         eduUniversity: theMember.eduUniversity
       });
       this.member = theMember;
-    })
+    });
   }
 
   getMembers() {
@@ -224,4 +228,19 @@ export class MembersComponent implements OnInit {
     });
   }
 
+  deleteMember() {
+    this.modalRef = this.modalService.show(ConfirmComponent, { class: 'modal-sm' });
+    this.modalRef.content.onClose.subscribe((result: any) => {
+      if (result == true) {
+        this.membersService.deleteMember(this.member.id).subscribe(result => {
+          this.getMembers();
+          this.toastrService.error('Church member data deleted successfully!', 'Deleted!');
+          this.membersForm.reset();
+          this.modalRef?.hide();
+        });
+      } else {
+        this.modalRef?.hide();
+      }
+    });
+  }
 }

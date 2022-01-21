@@ -25,11 +25,19 @@ export class MembersService {
     return this.httpClient.post<Member>(this.url, member, httpOptions);
   }
 
+  updateMember(member: Member): Observable<any> {
+    return this.httpClient.put<Member>(this.url + '/' + member.id, member, httpOptions);
+  }
+
   getMember(id: number): Observable<Member> {
     return this.httpClient.get<Member>(this.url + '/' + id, httpOptions);
   }
 
   getMembers(): Observable<Member[]> {
     return this.httpClient.get<Member[]>(this.url, httpOptions);
+  }
+
+  deleteMember(id: number): Observable<any> {
+    return this.httpClient.delete<Member>(this.url + '/' + id, httpOptions);
   }
 }
