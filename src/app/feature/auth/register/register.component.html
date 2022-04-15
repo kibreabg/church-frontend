@@ -33,13 +33,22 @@
                   <svg class="icon">
                     <use xlink:href="assets/sprites/free.svg#cil-lock-locked"></use>
                   </svg></span>
-                <input [ngClass]="{'was-validated is-invalid' : registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched}"
+                <input
+                  [ngClass]="{'was-validated is-invalid' : registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched}"
                   class="form-control" type="password" placeholder="Password" formControlName="password">
-                <div *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched" class="invalid-feedback">Please provide
+                <div *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched"
+                  class="invalid-feedback">Please provide
                   password.</div>
               </div>
+              <div class="input-group mb-3"><span class="input-group-text">
+                  <svg class="icon">
+                    <use xlink:href="assets/sprites/free.svg#cil-lock-locked"></use>
+                  </svg></span>
+                <input class="form-control" type="text" placeholder="Phone Number" formControlName="phonenumber">
+              </div>
               <button class="btn btn-block btn-success" type="submit" [disabled]="!registerForm.valid">Create
-                Account</button>
+                Account</button>&nbsp;
+              <button class="btn btn-block btn-primary" (click)="login()">Login</button>
             </form>
           </div>
         </div>

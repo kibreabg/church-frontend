@@ -1,0 +1,42 @@
+<div class="col-12">
+  <div class="card mb-4">
+    <div class="card-header"><strong>Manage Church App Users</strong></div>
+    <div class="card-body">
+      <form class="row g-3" [formGroup]="usersForm" id="formUsers" (ngSubmit)="saveUser()">
+        <div class="col-md-6">
+          <label class="form-label" for="txtUser">User Name</label>
+          <input class="form-control" id="txtUser" type="text" formControlName="userName"
+            [ngClass]="{'was-validated is-invalid' : usersForm.get('userName')?.hasError('required') && usersForm.get('userName')?.touched}">
+          <div *ngIf="usersForm.get('userName')?.hasError('required') && usersForm.get('userName')?.touched"
+            class="invalid-feedback">Please provide User Name!</div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="txtEmail">Email</label>
+          <input
+            [ngClass]="{'was-validated is-invalid' : (usersForm.get('email')?.hasError('required') || usersForm.get('email')?.hasError('email')) && usersForm.get('username')?.touched}"
+            class="form-control" type="text" id="txtEmail" formControlName="email">
+          <div *ngIf="usersForm.get('email')?.hasError('required') && usersForm.get('email')?.touched"
+            class="invalid-feedback">Please provide Email.</div>
+          <div *ngIf="usersForm.get('email')?.hasError('email') && usersForm.get('email')?.touched"
+            class="invalid-feedback">Email not properly formatted.</div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="txtPhoneNumber">Phone Number</label>
+          <input class="form-control" type="text" id="txtPhoneNumber" formControlName="phoneNumber">
+        </div>
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit" [disabled]="!usersForm.valid">Save</button>
+          <button class="btn btn-danger" type="button" [disabled]="!usersForm.valid" (click)="deleteUser()">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card mb-4">
+    <div class="card-header"><strong>List of Users</strong></div>
+    <div class="card-body">
+      <ag-grid-angular #usersGrid style="width: 100%; height: 500px;" (selectionChanged)="onSelectionChanged($event)"
+        [gridOptions]=gridOptions class="ag-theme-alpine" [rowData]="users" [columnDefs]="columnDefs">
+      </ag-grid-angular>
+    </div>
+  </div>
+</div>

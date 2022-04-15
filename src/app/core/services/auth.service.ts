@@ -1,8 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import jwtDecode from 'jwt-decode';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { User } from '../models/User';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +16,30 @@ export class AuthService {
 
   constructor(private httpClient: HttpClient) { }
 
-  private loginurl = environment.apiUrl + 'Identity/Login';
-  private registerurl = environment.apiUrl + 'Identity/Register';
+  private usersUrl = environment.apiUrl + 'Users';
 
-  register(data: any): Observable<any> {
-    return this.httpClient.post(this.registerurl, data);
+  addUser(user: User): Observable<any> {
+    return this.httpClient.post<User>(this.usersUrl, user, httpOptions);
   }
+
+  updateUser(user: User): Observable<any> {
+    return this.httpClient.put<User>(this.usersUrl + '/' + user.id, user, httpOptions);
+  }
+
+  getUser(id: string): Observable<User> {
+    return this.httpClient.get<User>(this.usersUrl + '/' + id, httpOptions);
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.httpClient.get<User[]>(this.usersUrl, httpOptions);
+  }
+
+  deleteUser(id: string): Observable<any> {
+    return this.httpClient.delete<User>(this.usersUrl + '/' + id, httpOptions);
+  }
+
   login(data: any): Observable<any> {
-    return this.httpClient.post(this.loginurl, data);
+    return this.httpClient.post(this.usersUrl + '/Login', data);
   }
 
   getToken() {
@@ -30,7 +51,7 @@ export class AuthService {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        let now = Math.floor(new Date().getTime()/1000);
+        let now = Math.floor(new Date().getTime() / 1000);
         let tokenExpiry = new Date((decodedToken as any).exp).getTime();
         if (decodedToken) {
           return ((decodedToken as any).iss == 'Church Server' && tokenExpiry > now) ? true : false;
