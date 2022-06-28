@@ -1,0 +1,28 @@
+<div class="col-12">
+  <div class="card mb-4">
+    <div class="card-header"><strong>Manage Church App Roles</strong></div>
+    <div class="card-body">
+      <form class="row g-3" [formGroup]="rolesForm" id="formRoles" (ngSubmit)="saveRole()">
+        <div class="col-md-6">
+          <label class="form-label" for="txtRole">Role Name</label>
+          <input class="form-control" id="txtRole" type="text" formControlName="roleName"
+            [ngClass]="{'was-validated is-invalid' : rolesForm.get('roleName')?.hasError('required') && rolesForm.get('roleName')?.touched}">
+          <div *ngIf="rolesForm.get('roleName')?.hasError('required') && rolesForm.get('roleName')?.touched"
+            class="invalid-feedback">Please provide Role Name!</div>
+        </div>
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit" [disabled]="!rolesForm.valid">Save</button>
+          <button class="btn btn-danger" type="button" [disabled]="!rolesForm.valid" (click)="deleteRole()">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card mb-4">
+    <div class="card-header"><strong>List of Roles</strong></div>
+    <div class="card-body">
+      <ag-grid-angular #rolesGrid style="width: 100%; height: 500px;" (selectionChanged)="onSelectionChanged($event)"
+        [gridOptions]=gridOptions class="ag-theme-alpine" [rowData]="roles" [columnDefs]="columnDefs">
+      </ag-grid-angular>
+    </div>
+  </div>
+</div>

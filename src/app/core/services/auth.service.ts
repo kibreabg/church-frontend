@@ -4,6 +4,7 @@ import jwtDecode from 'jwt-decode';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/User';
+import { Role } from '../models/Role';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -17,6 +18,7 @@ export class AuthService {
   constructor(private httpClient: HttpClient) { }
 
   private usersUrl = environment.apiUrl + 'Users';
+  private rolesUrl = environment.apiUrl + 'Roles';
 
   addUser(user: User): Observable<any> {
     return this.httpClient.post<User>(this.usersUrl, user, httpOptions);
@@ -38,8 +40,28 @@ export class AuthService {
     return this.httpClient.delete<User>(this.usersUrl + '/' + id, httpOptions);
   }
 
+  addRole(role: Role): Observable<any> {
+    return this.httpClient.post<Role>(this.rolesUrl, role, httpOptions);
+  }
+
+  updateRole(role: Role): Observable<any> {
+    return this.httpClient.put<Role>(this.rolesUrl + '/' + role.id, role, httpOptions);
+  }
+
+  getRole(id: string): Observable<Role> {
+    return this.httpClient.get<Role>(this.rolesUrl + '/' + id, httpOptions);
+  }
+
+  getRoles(): Observable<Role[]> {
+    return this.httpClient.get<Role[]>(this.rolesUrl, httpOptions);
+  }
+
+  deleteRole(id: string): Observable<any> {
+    return this.httpClient.delete<Role>(this.rolesUrl + '/' + id, httpOptions);
+  }
+
   login(data: any): Observable<any> {
-    return this.httpClient.post(this.usersUrl + '/Login', data);
+    return this.httpClient.post(this.rolesUrl + '/Login', data);
   }
 
   getToken() {

@@ -31,8 +31,10 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['members']);
       },
       (errorResponse) => {
-        if (errorResponse.error.status == '401') {
-          this.toastrService.error('Invalid Username or Password', errorResponse.error.title);
+        if (errorResponse.error?.status == '401') {
+          this.toastrService.error('Invalid Username or Password', errorResponse.error?.title);
+        } else {
+          this.toastrService.error('Invalid Username or Password', errorResponse.error);
         }
       }
     );

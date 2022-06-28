@@ -8,12 +8,14 @@ import { ToastrModule } from 'ngx-toastr';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ConfirmComponent } from './confirm/confirm.component';
+import { ErrorpageComponent } from './errorpage/errorpage.component';
 
 
 @NgModule({
   declarations: [
     LayoutComponent,
-    ConfirmComponent
+    ConfirmComponent,
+    ErrorpageComponent
   ],
   imports: [
     CommonModule,

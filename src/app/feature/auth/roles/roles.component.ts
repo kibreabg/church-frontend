@@ -1,20 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import { User } from 'src/app/core/models/User';
 import { Role } from 'src/app/core/models/Role';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ConfirmComponent } from 'src/app/shared/confirm/confirm.component';
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+  selector: 'app-roles',
+  templateUrl: './roles.component.html',
+  styleUrls: ['./roles.component.css']
 })
-export class UsersComponent implements OnInit {
+export class RolesComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
@@ -23,22 +22,17 @@ export class UsersComponent implements OnInit {
   ) { }
 
   public modalRef?: BsModalRef;
-  public user = new User();
-  public users!: User[];
+  public role = new Role();
   public roles!: Role[];
-  @ViewChild('usersGrid') usersGrid!: AgGridAngular;
+  @ViewChild('rolesGrid') rolesGrid!: AgGridAngular;
   @ViewChild('confirmModal') confirmModal!: ConfirmComponent;
-  public usersForm = new FormGroup({
-    userName: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.required),
-    phoneNumber: new FormControl(''),
+  public rolesForm = new FormGroup({
+    roleName: new FormControl('', Validators.required),
   });
 
   public columnDefs: ColDef[] = [
     { field: '', headerName: 'Select', width: 80, checkboxSelection: true },
-    { field: 'userName', headerName: 'User Name' },
-    { field: 'email', headerName: 'Email' },
-    { field: 'phoneNumber', headerName: 'Phone Number' }
+    { field: 'name', headerName: 'Role Name' }
   ];
   public gridOptions = {
     // PROPERTIES
@@ -55,7 +49,6 @@ export class UsersComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.getUsers();
     this.getRoles();
   }
 
@@ -71,29 +64,19 @@ export class UsersComponent implements OnInit {
   }
 
   onSelectionChanged(params: any) {
-    const selectedRows = this.usersGrid.api.getSelectedRows();
-    this.getUser(selectedRows[0].id);
+    const selectedRows = this.rolesGrid.api.getSelectedRows();
+    this.getRole(selectedRows[0].id);
   }
 
-  getUser(id: string) {
-    return this.authService.getUser(id).subscribe(
-      (theUser) => {
-        this.usersForm.patchValue({
-          userName: theUser.userName,
-          email: theUser.email,
-          phoneNumber: theUser.phoneNumber
+  getRole(id: string) {
+    return this.authService.getRole(id).subscribe(
+      (theRole) => {
+        this.rolesForm.patchValue({
+          roleName: theRole.name
         });
-        this.user = theUser;
+        this.role = theRole;
       });
 
-  }
-
-  getUsers() {
-    return this.authService.getUsers().subscribe(
-      (theUsers) => {
-        this.users = theUsers;
-        this.user = new User();
-      });
   }
 
   getRoles() {
@@ -104,30 +87,28 @@ export class UsersComponent implements OnInit {
     );
   }
 
-  saveUser() {
-    if (this.usersForm.valid) {
-      this.user.userName = this.usersForm.get('userName')?.value;
-      this.user.email = this.usersForm.get('email')?.value;
-      this.user.phoneNumber = this.usersForm.get('phoneNumber')?.value;
+  saveRole() {
+    if (this.rolesForm.valid) {
+      this.role.name = this.rolesForm.get('roleName')?.value;
 
-      if (this.user.id != '') {
-        return this.authService.updateUser(this.user).subscribe(
+      if (this.role.id != '') {
+        return this.authService.updateRole(this.role).subscribe(
           (result) => {
-            this.toastrService.success('User updated successfully!', 'Updated!');
-            this.getUsers();
-            this.usersForm.reset({
+            this.toastrService.success('Role updated successfully!', 'Updated!');
+            this.getRoles();
+            this.rolesForm.reset({
             });
           },
           (errorResponse) => {
             this.toastrService.error('An Error Occured!', errorResponse.error.title);
           });
       } else {
-        return this.authService.addUser(this.user).subscribe(
-          (userId) => {
-            this.user.id = userId;
-            this.toastrService.success('User added successfully!', 'Saved!');
-            this.getUsers();
-            this.usersForm.reset({
+        return this.authService.addRole(this.role).subscribe(
+          (roleId) => {
+            this.role.id = roleId;
+            this.toastrService.success('Role added successfully!', 'Saved!');
+            this.getRoles();
+            this.rolesForm.reset({
             });
           },
           (errorResponse) => {
@@ -135,22 +116,22 @@ export class UsersComponent implements OnInit {
           });
       }
     } else {
-      return this.validateAllFormFields(this.usersForm);
+      return this.validateAllFormFields(this.rolesForm);
     }
   }
 
-  deleteUser() {
+  deleteRole() {
     this.modalRef = this.modalService.show(ConfirmComponent, { class: 'modal-sm' });
     this.modalRef.content.onClose.subscribe(
       (response: any) => {
         if (response == true) {
-          this.authService.deleteUser(this.user.id).subscribe(
+          this.authService.deleteRole(this.role.id).subscribe(
             (result) => {
               if (result.succeeded) {
-                this.toastrService.success('User deleted successfully!', 'Deleted!');
-                this.getUsers();
-                this.usersForm.reset({
-                  userName: '', email: '', phoneNumber: ''
+                this.toastrService.success('Role deleted successfully!', 'Deleted!');
+                this.getRoles();
+                this.rolesForm.reset({
+                  roleName: ''
                 });
               }
             },

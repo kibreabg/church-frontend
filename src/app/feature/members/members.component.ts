@@ -1,5 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
@@ -19,7 +21,8 @@ export class MembersComponent implements OnInit {
   constructor(
     private membersService: MembersService,
     private toastrService: ToastrService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private router: Router
   ) { }
 
   @ViewChild('membersGrid') membersGrid!: AgGridAngular;
@@ -245,9 +248,17 @@ export class MembersComponent implements OnInit {
   }
 
   getMembers() {
-    return this.membersService.getMembers().subscribe(theMembers => {
-      this.members = theMembers;
-    });
+    return this.membersService.getMembers().subscribe(
+      (theMembers) => {
+        this.members = theMembers;
+      },
+      (errorResponse) => {
+        if (errorResponse.status == '403') {
+          this.router.navigate(['/errorspage'], { queryParams: { errorcode: '403' } });
+        } else {
+          this.toastrService.error(errorResponse, 'Error!');
+        }
+      });
   }
 
   deleteMember() {
